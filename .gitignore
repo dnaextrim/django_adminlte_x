@@ -1,0 +1,7 @@
+/django_adminlte_x.egg-info/
+/dist/
+/build/
+.idea/django_adminlte_x.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
