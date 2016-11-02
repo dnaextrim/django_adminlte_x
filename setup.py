@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='django_adminlte_x',
-    version='0.5',
+    version='0.6',
     packages=['django_adminlte_x'],
     license='MIT License',
     description='AdminLTE Bootstrap Theme packaged for Django',
