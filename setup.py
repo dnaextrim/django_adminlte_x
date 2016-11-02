@@ -6,8 +6,9 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django_adminlte_x',
-    version='0.7',
+    version='0.8',
     packages=find_packages(),
+    include_package_data=True,
     license='MIT License',
     description='AdminLTE Bootstrap Theme packaged for Django',
     long_description=open('README.md', 'r').read(),
