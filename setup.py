@@ -4,14 +4,16 @@ from __future__ import unicode_literals
 
 import os
 
-from setuptools import Command, find_packages, setup
+from setuptools import find_packages, setup
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+__import__("adminlte")
+
 setup(
     name='django-adminlte-x',
-    version='0.11',
+    version='0.12',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
