@@ -16,7 +16,7 @@
         {% if app_list %}
             {% for app in app_list %}
 
-                <div class="box box-primary box-solid">
+                <div class="box box-primary box-solid app-box">
                     <div class="box-header with-border">
                         <h3 class="box-title"><a href="{{ app.app_url }}" class="section"
                                                  title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
@@ -34,7 +34,7 @@
 
                         {% for model in app.models %}
 
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-md-4 col-sm-6 model-box">
 
                                 <div class="info-box bg-light-blue">
                                     <a href="{{ model.admin_url }}"><span class="info-box-icon">{% autoescape off %}{% icon %}{% endautoescape %}</span></a>
