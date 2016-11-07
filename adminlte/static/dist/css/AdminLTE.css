@@ -4927,6 +4927,17 @@ table.text-center th {
   }
 }
 
+.app-box {
+  margin-bottom: 15px;
+}
+.app-box .box-header{
+  padding: 5px;
+}
+
+.app-box .box-header .box-tools{
+  top: 1px;
+}
+
 .app-box .box-body{
   padding:5px;
 }
