@@ -4949,3 +4949,7 @@ table.text-center th {
 .box-body .model-box div{
   margin-bottom: 0;
 }
+
+.info-box a:hover{
+  color: #ffffff;
+}
