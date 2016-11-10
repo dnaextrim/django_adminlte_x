@@ -103,12 +103,12 @@ class _Menu:
                     url = model['admin_url']
 
                 icon = '<i class="fa fa-circle-o"></i>'
-                if model['name'] in self.models_icon:
-                    if self.models_icon[model['name']] != '':
-                        if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>', self.models_icon[model['name']]):
-                            icon = self.models_icon[model['name']]
+                if model['object_name'].title() in self.models_icon:
+                    if self.models_icon[model['object_name'].title()] != '':
+                        if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>', self.models_icon[model['object_name'].title()]):
+                            icon = self.models_icon[model['object_name'].title()]
                         else:
-                            icon = '<i class="%s"></i>' % (self.models_icon[model['name']])
+                            icon = '<i class="%s"></i>' % (self.models_icon[model['object_name'].title()])
 
                 r += '<li><a href="%s">%s %s</a></li>' % (url, icon, model['name'])
 
