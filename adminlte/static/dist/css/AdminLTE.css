@@ -4951,5 +4951,13 @@ table.text-center th {
 }
 
 .info-box a:hover{
-  color: #ffffff;
+  color: #9ddbff;
+}
+
+tr.form-row td {
+  padding: 8px;
+}
+
+#btn-history{
+  color: #000000;
 }

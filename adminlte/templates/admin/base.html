@@ -1,4 +1,4 @@
-{% load i18n static %}{% load menu %}<!DOCTYPE html>
+{% load i18n static %}{% load assets %}{% load menu %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
@@ -20,6 +20,7 @@
     {% if LANGUAGE_BIDI %}
         <link rel="stylesheet" type="text/css"
               href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}"/>{% endif %}
+    {% autoescape off %}{% css %}{% endautoescape %}
     {% block extrahead %}{% endblock %}
     {% block blockbots %}
         <meta name="robots" content="NONE,NOARCHIVE"/>{% endblock %}
@@ -101,7 +102,8 @@
             <!-- search form -->
             <div class="sidebar-form">
                 <div class="input-group">
-                    <input type="text" id="search-menu" name="q" class="form-control" placeholder="Search..." autocomplete="off">
+                    <input type="text" id="search-menu" name="q" class="form-control" placeholder="Search..."
+                           autocomplete="off">
                     <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
@@ -391,11 +393,13 @@
 <!-- AdminLTE App -->
 <script src="{% static "dist/js/app.min.js" %}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{% static "dist/js/pages/dashboard.js" %}"></script>
+{#<script src="{% static "dist/js/pages/dashboard.js" %}"></script>#}
 <!-- AdminLTE for demo purposes -->
 <script src="{% static "dist/js/demo.js" %}"></script>
 <script src="{% static "js/menu.js" %}"></script>
 
+{% autoescape off %}{% js %}{% endautoescape %}
+{% block extrafoot %}{% endblock %}
 
 </body>
 </html>
