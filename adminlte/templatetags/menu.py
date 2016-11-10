@@ -122,12 +122,13 @@ class _Menu:
     def get_model_icon(self, context):
 
         icon = '<i class="fa fa-circle-o"></i>'
-        if context['model']['name'] in self.models_icon:
-            if self.models_icon[context['model']['name']] != '':
-                if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>', self.models_icon[context['model']['name']]):
-                    icon = self.models_icon[context['model']['name']]
+        if context['model']['object_name'].title() in self.models_icon:
+
+            if self.models_icon[context['model']['object_name'].title()] != '':
+                if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>', self.models_icon[context['model']['object_name'].title()]):
+                    icon = self.models_icon[context['model']['object_name']]
                 else:
-                    icon = '<i class="%s"></i>' % (self.models_icon[context['model']['name']])
+                    icon = '<i class="%s"></i>' % (self.models_icon[context['model']['object_name'].title()])
 
         return icon
 
