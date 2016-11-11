@@ -20,8 +20,17 @@ class Assets:
 
         return ret
 
+
 def add(type, assets):
     if type.lower() == 'css':
-        Assets.css = assets
+        Assets.css += assets
     elif type.lower() == 'js':
-        Assets.js = assets
+        Assets.js += assets
+
+
+def css(assets):
+    Assets.css = assets
+
+
+def js(assets):
+    Assets.js = assets
