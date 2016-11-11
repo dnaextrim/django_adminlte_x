@@ -771,7 +771,7 @@ table#change-history tbody th {
 }
 
 #content-main {
-    float: left;
+    /*float: left;*/
     width: 100%;
 }
 
