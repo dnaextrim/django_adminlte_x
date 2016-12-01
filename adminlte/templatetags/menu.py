@@ -84,10 +84,17 @@ class _Menu:
         return r
 
     def admin_apps(self, context, r):
+        from django.core.urlresolvers import resolve
+        current_url = context['request'].path
 
         for app in context['available_apps']:
-            r += '<li class="treeview"><a href="#"><i class="fa fa-circle"></i> <span>%s</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a><ul class="treeview-menu">\n' % (
-                app['name'])
+
+            if app['app_url'] in current_url:
+                r += '<li class="treeview active"><a href="#"><i class="fa fa-circle"></i> <span>%s</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a><ul class="treeview-menu">\n' % (
+                    app['name'])
+            else:
+                r += '<li class="treeview"><a href="#"><i class="fa fa-circle"></i> <span>%s</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a><ul class="treeview-menu">\n' % (
+                    app['name'])
 
             for model in app['models']:
                 if 'add_url' in model:
@@ -110,7 +117,10 @@ class _Menu:
                         else:
                             icon = '<i class="%s"></i>' % (self.models_icon[model['object_name'].title()])
 
-                r += '<li><a href="%s">%s %s</a></li>' % (url, icon, model['name'])
+                if model['admin_url'] in current_url:
+                    r += '<li class="active"><a href="%s">%s %s</a></li>' % (url, icon, model['name'])
+                else:
+                    r += '<li><a href="%s">%s %s</a></li>' % (url, icon, model['name'])
 
             r += '</ul></li>\n'
 
