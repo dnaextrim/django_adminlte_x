@@ -1,42 +1,36 @@
 {% load i18n static %}{% load assets %}{% load menu %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
-<html lang="{{ LANGUAGE_CODE|default:" en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" type="text/css"
-          href="{% block stylesheet %}{% static " admin
-    /css/base.css" %}{% endblock %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static " bootstrap
-    /css/bootstrap.min.css" %}">
+          href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap.min.css" %}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static " dist
-    /css/AdminLTE.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static " dist
-    /css/skins/_all-skins.min.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static " plugins
-    /iCheck/square/blue.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "dist/css/AdminLTE.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "plugins/iCheck/square/blue.css" %}">
     {% block extrastyle %}{% endblock %}
     {% if LANGUAGE_BIDI %}
-    <link rel="stylesheet" type="text/css"
-          href="{% block stylesheet_rtl %}{% static " admin
-    /css/rtl.css" %}{% endblock %}"/>{% endif %}
+        <link rel="stylesheet" type="text/css"
+              href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}"/>{% endif %}
     {% autoescape off %}{% css %}{% endautoescape %}
     {% block extrahead %}{% endblock %}
     {% block blockbots %}
-    <meta name="robots" content="NONE,NOARCHIVE"/>
-    {% endblock %}
+        <meta name="robots" content="NONE,NOARCHIVE"/>{% endblock %}
 </head>
 {% load i18n %}
 
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %} hold-transition skin-blue sidebar-mini fixed"
+<body class="{% if is_popup %}popup sidebar-collapse{% endif %}{% block bodyclass %}{% endblock %} hold-transition skin-blue sidebar-mini fixed"
       data-admin-utc-offset="{% now " Z" %}">
 <div class="wrapper">
+    {% if not is_popup %}
     <header class="main-header">
         <!-- Logo -->
         <a href="{% url 'admin:index' %}" class="logo">
@@ -46,6 +40,7 @@
             <span class="logo-lg">{{ site_header|default:_('Django administration') }}</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
+        {% if not is_popup %}
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -88,6 +83,7 @@
                 </ul>
             </div>
         </nav>
+        {% endif %}
     </header>
 
     <aside class="main-sidebar">
@@ -119,26 +115,26 @@
                 <li class="header">MAIN NAVIGATION</li>
                 {% autoescape off %}{% menu %}{% endautoescape %}
                 {% comment %}{% if available_apps %}
-                {% for app in available_apps %}
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>{{ app.name }}</span>
-                        <span class="pull-right-container">
+                    {% for app in available_apps %}
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i> <span>{{ app.name }}</span>
+                                <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        {% for model in app.models %}
-                        {% if model.admin_url %}
-                        <li><a href="{{ model.admin_url }}"><i
-                                class="fa fa-circle-o"></i>{{ model.name }}</a></li>
-                        {% else %}
-                        <li><a href="{{ model.admin_url }}"><i class="fa fa-circle-o"></i>{{ model.name }}</a></li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                </li>
-                {% endfor %}
+                            </a>
+                            <ul class="treeview-menu">
+                                {% for model in app.models %}
+                                    {% if model.admin_url %}
+                                        <li><a href="{{ model.admin_url }}"><i
+                                                class="fa fa-circle-o"></i>{{ model.name }}</a></li>
+                                    {% else %}
+                                        <li><a href="{{ model.admin_url }}"><i class="fa fa-circle-o"></i>{{ model.name }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
                 {% endif %}{% endcomment %}
 
 
@@ -146,14 +142,16 @@
         </section>
         <!-- /.sidebar -->
     </aside>
+    {% endif %}
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" {% if is_popup %}style="margin-left: 0 !important; padding-top: 0" {% endif %}>
+        {% if not is_popup %}
         {% block breadcrumbs %}
-        <ol class="breadcrumb">
-            <li><a href="{% url 'admin:index' %}"><i class="fa fa-dashboard"></i> {% trans 'Home' %}</a></li>
-            {% if title %} &rsaquo; {{ title }}{% endif %}
-        </ol>
+            <ol class="breadcrumb">
+                <li><a href="{% url 'admin:index' %}"><i class="fa fa-dashboard"></i> {% trans 'Home' %}</a></li>
+                {% if title %} &rsaquo; {{ title }}{% endif %}
+            </ol>
         {% endblock %}
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -163,13 +161,14 @@
                 <small>Control panel</small>
             </h1>
         </section>
+        {% endif %}
 
         <!-- Main content -->
         <section class="content">
 
             {% block content %}
-            {% block object-tools %}{% endblock %}
-            {{ content }}
+                {% block object-tools %}{% endblock %}
+                {{ content }}
             {% endblock %}
             {% block sidebar %}{% endblock %}
 
@@ -178,19 +177,21 @@
     </div>
     <!-- /.content-wrapper -->
 
+    {% if not is_popup %}
     <!-- /.content-wrapper -->
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.1.10
         </div>
-        <strong>Copyright &copy; 2014-2016 <a href="http://www.telpp.com">Klinik @ TELPP</a>.</strong> All rights
+        <strong>Copyright &copy; 2017-2018 <a href="http://www.telpp.com">HRIS @ Bina Darma</a>.</strong> All rights
         reserved.
     </footer>
+    {% endif %}
 
 </div>
 
 <!-- jQuery 2.2.3 -->
-<script src="{% static " plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
 <!-- jQuery UI 1.11.4 -->
 <
 script
@@ -202,7 +203,7 @@ plugins / jQueryUI / jquery - ui.min.js
     $.widget.bridge('uibutton', $.ui.button);
 </script>
 <!-- Bootstrap 3.3.6 -->
-<script src="{% static " bootstrap/js/bootstrap.min.js" %} "></script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %} "></script>
 <
 script
 src = "{% static "
@@ -210,20 +211,12 @@ plugins / slimScroll / jquery.slimscroll.min.js
 " %} " ></script>
 
 <!-- AdminLTE App -->
-<script src="{% static " dist/js/app.min.js" %}"></script>
+<script src="{% static "dist/js/app.min.js" %}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-{#<
-    script
-    src = "{% static "
-    dist / js / pages / dashboard.js
-    " %}" ></script>#}
+{#<script src="{% static "dist/js/pages/dashboard.js" %}"></script>#}
 <!-- AdminLTE for demo purposes -->
-<script src="{% static " dist/js/demo.js" %}"></script>
-<
-script
-src = "{% static "
-js / menu.js
-" %}" ></script>
+<script src="{% static "dist/js/demo.js" %}"></script>
+<script src="{% static "js/menu.js" %}"></script>
 
 {% autoescape off %}{% js %}{% endautoescape %}
 {% block extrafoot %}{% endblock %}

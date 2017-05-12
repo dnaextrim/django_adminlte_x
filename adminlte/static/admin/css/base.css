@@ -942,11 +942,11 @@ table#change-history tbody th {
 .delete-confirmation form .cancel-link {
     display: inline-block;
     vertical-align: middle;
-    height: 15px;
+    height: 40px;
     line-height: 15px;
     background: #ddd;
     border-radius: 4px;
-    padding: 10px 15px;
+    padding: 12px 15px;
     color: #333;
     margin: 0 0 0 10px;
 }
@@ -968,4 +968,8 @@ table#change-history tbody th {
 
 .popup #header {
     padding: 10px 20px;
+}
+
+.collapse {
+    display: block !important;
 }

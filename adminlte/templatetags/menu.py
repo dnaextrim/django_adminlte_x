@@ -3,12 +3,14 @@ import re
 
 from django.conf.urls import url
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 
 class _Menu:
     parents = []
     childs = []
     models_icon = {}
+    exclude = []
 
     def clear(self):
         self.parents = []
@@ -57,7 +59,8 @@ class _Menu:
             # sorted(self.parents)
             menus = self.parents
 
-            r = '<li><a href="' + reverse('admin:index') + '"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>'
+            r = '<li><a href="' + reverse(
+                'admin:index') + '"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>'
 
         for group in menus:
             key = [key for key in group][0]
@@ -89,6 +92,9 @@ class _Menu:
 
         for app in context['available_apps']:
 
+            if app['name'] in self.exclude:
+                continue
+
             if app['app_url'] in current_url:
                 r += '<li class="treeview active"><a href="#"><i class="fa fa-circle"></i> <span>%s</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a><ul class="treeview-menu">\n' % (
                     app['name'])
@@ -97,6 +103,10 @@ class _Menu:
                     app['name'])
 
             for model in app['models']:
+
+                if app['name'] + "." + model['object_name'] in self.exclude:
+                    continue
+
                 if 'add_url' in model:
                     url = model['add_url']
 
@@ -112,15 +122,16 @@ class _Menu:
                 icon = '<i class="fa fa-circle-o"></i>'
                 if model['object_name'].title() in self.models_icon:
                     if self.models_icon[model['object_name'].title()] != '':
-                        if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>', self.models_icon[model['object_name'].title()]):
+                        if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>',
+                                    self.models_icon[model['object_name'].title()]):
                             icon = self.models_icon[model['object_name'].title()]
                         else:
                             icon = '<i class="%s"></i>' % (self.models_icon[model['object_name'].title()])
 
                 if model['admin_url'] in current_url:
-                    r += '<li class="active"><a href="%s">%s %s</a></li>' % (url, icon, model['name'])
+                    r += '<li class="active"><a href="%s">%s <span>%s</span></a></li>' % (url, icon, model['name'])
                 else:
-                    r += '<li><a href="%s">%s %s</a></li>' % (url, icon, model['name'])
+                    r += '<li><a href="%s">%s <span>%s</span></a></li>' % (url, icon, model['name'])
 
             r += '</ul></li>\n'
 
@@ -135,12 +146,14 @@ class _Menu:
         if context['model']['object_name'].title() in self.models_icon:
 
             if self.models_icon[context['model']['object_name'].title()] != '':
-                if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>', self.models_icon[context['model']['object_name'].title()]):
+                if re.match(r'\<([a-z]*)\b[^\>]*\>(.*?)\<\/\1\>',
+                            self.models_icon[context['model']['object_name'].title()]):
                     icon = self.models_icon[context['model']['object_name']]
                 else:
                     icon = '<i class="%s"></i>' % (self.models_icon[context['model']['object_name'].title()])
 
         return icon
+
 
 register = template.Library()
 
@@ -153,7 +166,13 @@ def menu(context):
 
     return Menu.admin_apps(context, Menu.render(context))
 
+
 @register.simple_tag(takes_context=True)
 def icon(context):
     return Menu.get_model_icon(context)
 
+
+@register.simple_tag(takes_context=True)
+def menu_exclude(context):
+    context['menu_exclude'] = Menu.exclude
+    return context['menu_exclude']

@@ -8,7 +8,7 @@ from .forms import LogEntryAdmin
 from adminlte.templatetags.menu import Menu
 from adminlte import Assets
 
-admin.site.site_title = 'Klinik TEL'
+admin.site.site_title = 'HRIS'
 admin.site.site_header = admin.site.site_title
 
 
