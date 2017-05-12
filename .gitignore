@@ -6,5 +6,3 @@
 .idea/modules.xml
 .idea/workspace.xml
 /publish.bat
-adminlte/__init__.py
-publish.bat
