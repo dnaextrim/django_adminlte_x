@@ -5,7 +5,6 @@
     $(document).ready(function() {
         var modelName = $('#django-admin-form-add-constants').data('modelName');
         $('.add-another').click(function(e) {
-            alert("DODOL");
             e.preventDefault();
             var event = $.Event('django:add-another-related');
             $(this).trigger(event);

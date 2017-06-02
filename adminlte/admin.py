@@ -16,14 +16,13 @@ class MyLogEntryAdmin(LogEntryAdmin):
     def has_add_permission(self, request):
         return False
 
-
 admin.site.register(LogEntry, MyLogEntryAdmin)
-
 
 class PermissionAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'content_type', 'codename')
     list_editable = ('codename',)
     search_fields = ('__str__', 'content_type', 'codename')
+
 
 
 class PermissionInline(admin.TabularInline):
@@ -33,14 +32,14 @@ class PermissionInline(admin.TabularInline):
 
 
 class ContenTypeAdmin(admin.ModelAdmin):
+
     class Media:
         js = ('admin/js/inlines.js', 'js/content_type.js',)
         # Assets.js([
         #     'js/content_type.js',
         # ])
 
-    inlines = [PermissionInline, ]
-
+    inlines = [PermissionInline,]
 
 admin.site.register(Permission, PermissionAdmin)
 admin.site.register(ContentType, ContenTypeAdmin)

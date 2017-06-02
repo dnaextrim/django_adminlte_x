@@ -1,0 +1,14 @@
+.sidebar-menu li.selected > a {
+    color: #fff;
+    background: #1e282c;
+    border-left-color: #3c8dbc;
+}
+
+.sidebar-menu li.selected .treeview-menu {
+    display: block;
+}
+
+.sidebar-menu li.selected .treeview-menu a{
+    margin: 0 1px !important;
+    background: #2c3b41 !important;
+}

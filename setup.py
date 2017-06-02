@@ -13,7 +13,7 @@ __import__("adminlte")
 
 setup(
     name='django-adminlte-x',
-    version='0.22',
+    version='0.22.1',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',

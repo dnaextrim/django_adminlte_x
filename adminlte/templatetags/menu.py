@@ -92,8 +92,8 @@ class _Menu:
 
         for app in context['available_apps']:
 
-            if app['name'] in self.exclude:
-                continue
+            if app['app_label'] in self.exclude:
+                 continue
 
             if app['app_url'] in current_url:
                 r += '<li class="treeview active"><a href="#"><i class="fa fa-circle"></i> <span>%s</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a><ul class="treeview-menu">\n' % (
@@ -104,7 +104,7 @@ class _Menu:
 
             for model in app['models']:
 
-                if app['name'] + "." + model['object_name'] in self.exclude:
+                if app['app_label'] + "." + model['object_name'] in self.exclude:
                     continue
 
                 if 'add_url' in model:
@@ -164,7 +164,7 @@ Menu = _Menu()
 def menu(context):
     # user = context['request'].user
 
-    return Menu.admin_apps(context, Menu.render(context))
+    return mark_safe(Menu.admin_apps(context, Menu.render(context)))
 
 
 @register.simple_tag(takes_context=True)

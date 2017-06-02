@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" type="text/css"
           href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}"/>
     <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap.min.css" %}">
@@ -16,77 +17,153 @@
     <link rel="stylesheet" type="text/css" href="{% static "dist/css/AdminLTE.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "dist/css/skins/_all-skins.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "plugins/iCheck/square/blue.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/menu.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "plugins/sweetalert2/sweetalert2.min.css" %}">
     {% block extrastyle %}{% endblock %}
     {% if LANGUAGE_BIDI %}
         <link rel="stylesheet" type="text/css"
               href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}"/>{% endif %}
-    {% autoescape off %}{% css %}{% endautoescape %}
+    {% css %}
     {% block extrahead %}{% endblock %}
     {% block blockbots %}
-        <meta name="robots" content="NONE,NOARCHIVE"/>{% endblock %}
+        <meta name="robots" content="NONE,NOARCHIVE"/>
+    {% endblock %}
+
+    <style>
+        .form-row {
+            border-bottom: none;
+        }
+        .change-list .filtered .results, .change-list .filtered .paginator, .filtered #toolbar, .filtered div.xfull {
+            margin-right: 240px;
+            width: auto;
+        }
+        header > a:first-child {
+            text-shadow: 2px 2px 1px black;
+            font-weight: bold !important;
+        }
+        .table {
+            border: solid 2px #cfd2d5;
+        }
+        .navbar {
+            -webkit-box-shadow: 2px 2px 6px grey;
+            -moz-box-shadow: 2px 2px 6px grey;
+            box-shadow: 2px 2px 6px grey;
+        }
+        .breadcrumb {
+            -webkit-box-shadow: 1px 1px 1px grey;
+            -moz-box-shadow: 1px 1px 1px grey;
+            box-shadow: 1px 1px 1px grey;
+        }
+        .module, #changelist-filter, .submit-row{
+            -webkit-box-shadow:  2px 2px 3px grey;
+            -moz-box-shadow:  2px 2px 3px grey;
+            box-shadow:  2px 2px 3px grey;
+            padding: 5px;
+                border: solid 1px #cfd2d5;
+        }
+        .object-tools a, .object-tools button, .object-tools input[type=button], .object-tools input[type=submit],
+        .object-tools input[type=reset]{
+            filter: drop-shadow(1px 1px 2px grey);
+        }
+        .submit-row button, .submit-row input[type=button], .submit-row input[type=submit], .submit-row input[type=reset] {
+            -webkit-box-shadow:  1px 1px 2px grey;
+            -moz-box-shadow:  1px 1px 2px grey;
+            box-shadow:  1px 1px 2px grey;
+        }
+        .content-header {
+            padding-right: 260px;
+        }
+        .content-header h1 {
+            background: #3c8dbc;
+            border: solid 1px grey;
+            padding: 5px;
+            text-shadow: 1px 1px 2px black;
+            -webkit-box-shadow:  1px 1px 1px grey;
+            -moz-box-shadow:  1px 1px 1px grey;
+            box-shadow:  1px 1px 1px grey;
+            color: #f2f5ff;
+            font-weight: bold;
+            margin-bottom: -2px;
+        }
+        .content-header h1 small {
+            color:#f2f5ff;
+        }
+        ul.nav-tabs li {
+            border-right: solid 2px gainsboro !important;
+{#            border-left: solid 2px gainsboro;#}
+            margin-right:0px !important;
+        }
+        ul.nav-tabs li.active {
+            border-right: 0 !important;
+{#            border-left: none;#}
+            -webkit-box-shadow: 1px -1px 1px grey;
+            -moz-box-shadow: 1px -1px 1px grey;
+            box-shadow: 1px -1px 1px grey;
+        }
+    </style>
 </head>
 {% load i18n %}
 
 <body class="{% if is_popup %}popup sidebar-collapse{% endif %}{% block bodyclass %}{% endblock %} hold-transition skin-blue sidebar-mini fixed"
-      data-admin-utc-offset="{% now " Z" %}">
+      data-admin-utc-offset="{% now "Z" %}">
 <div class="wrapper">
     {% if not is_popup %}
-    <header class="main-header">
-        <!-- Logo -->
-        <a href="{% url 'admin:index' %}" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini">{{ site_header|default:_('Django administration') }}</span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg">{{ site_header|default:_('Django administration') }}</span>
-        </a>
-        <!-- Header Navbar: style can be found in header.less -->
-        {% if not is_popup %}
-        <nav class="navbar navbar-static-top">
-            <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="{% url 'admin:index' %}" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini">{{ site_header|default:_('Django administration') }}</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg">{{ site_header|default:_('Django administration') }}</span>
             </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            {% if not is_popup %}
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
 
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- User Account: style can be found in dropdown.less -->
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{% static " dist/img/user2-160x160.jpg" %}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">{% firstof user.get_short_name user.get_username %}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
-                                <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle"
-                                     alt="User Image">
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{% static "dist/img/user2-160x160.jpg" %}" class="user-image" alt="User Image">
+                                <span class="hidden-xs">{% firstof user.get_short_name user.get_username %}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle"
+                                         alt="User Image">
 
-                                <p>
-                                    {% firstof user.get_short_name user.get_username %}
-                                    <small>Member since Nov. 2012</small>
-                                </p>
-                            </li>
+                                    <p>
+                                        {% firstof user.get_short_name user.get_username %}
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
 
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="{% url 'admin:password_change' %}"
-                                       class="btn btn-default btn-flat">{% trans 'Change password' %}</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="{% url 'admin:logout' %}"
-                                       class="btn btn-default btn-flat">{% trans 'Log out' %}</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        {% endif %}
-    </header>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="{% url 'admin:password_change' %}"
+                                           class="btn btn-default btn-flat">{% trans 'Change password' %}</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="{% url 'admin:logout' %}"
+                                           class="btn btn-default btn-flat">{% trans 'Log out' %}</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            {% endif %}
+        </header>
 
-    <aside class="main-sidebar">
+        <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- Sidebar user panel -->
@@ -113,7 +190,7 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
-                {% autoescape off %}{% menu %}{% endautoescape %}
+                {% menu %}
                 {% comment %}{% if available_apps %}
                     {% for app in available_apps %}
                         <li class="treeview">
@@ -145,7 +222,7 @@
     {% endif %}
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" {% if is_popup %}style="margin-left: 0 !important; padding-top: 0" {% endif %}>
+    <div class="content-wrapper" {% if is_popup %}style="margin-left: 0 !important; padding-top: 0"{% endif %}>
         {% if not is_popup %}
         {% block breadcrumbs %}
             <ol class="breadcrumb">
@@ -183,7 +260,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.1.10
         </div>
-        <strong>Copyright &copy; 2017-2018 <a href="http://www.telpp.com">HRIS @ Bina Darma</a>.</strong> All rights
+        <strong>Copyright &copy; 2017-2018 <a href="https://github.com/dnaextrim/django_adminlte_x">django_adminlte_x @ AdminLTE</a>.</strong> All rights
         reserved.
     </footer>
     {% endif %}
@@ -193,22 +270,14 @@
 <!-- jQuery 2.2.3 -->
 <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
 <!-- jQuery UI 1.11.4 -->
-<
-script
-src = "{% static "
-plugins / jQueryUI / jquery - ui.min.js
-" %}" ></script>
+<script src="{% static "plugins/jQueryUI/jquery-ui.min.js" %}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge('uibutton', $.ui.button);
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="{% static "bootstrap/js/bootstrap.min.js" %} "></script>
-<
-script
-src = "{% static "
-plugins / slimScroll / jquery.slimscroll.min.js
-" %} " ></script>
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %} "></script>
 
 <!-- AdminLTE App -->
 <script src="{% static "dist/js/app.min.js" %}"></script>
@@ -217,9 +286,30 @@ plugins / slimScroll / jquery.slimscroll.min.js
 <!-- AdminLTE for demo purposes -->
 <script src="{% static "dist/js/demo.js" %}"></script>
 <script src="{% static "js/menu.js" %}"></script>
+<script src="{% static "plugins/sweetalert2/sweetalert2.min.js" %}"></script>
 
-{% autoescape off %}{% js %}{% endautoescape %}
+{% js %}
+
+<script src="{% static "js/app.js" %}"></script>
+
 {% block extrafoot %}{% endblock %}
+<script>
+    $(function() {
+        $('.add-row a').bind('click', function() {
+            var select = $('select').not('[name*=__prefix__]');
+            select.each(function(idx, el) {
+                try {
+                    select.select2('destroy');
+                } catch (e) {}
+                select.select2();
+            });
 
+        });
+
+        $('select').not('[name*=__prefix__]').each(function(idx, el) {
+            $(el).select2();
+        });
+    });
+</script>
 </body>
 </html>

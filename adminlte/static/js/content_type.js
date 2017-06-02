@@ -7,10 +7,10 @@ django.jQuery(function () {
     $('.add-row').find('a')[0].click();
     $('.add-row').find('a')[0].click();
 
-    $('#id_model').bind('keyup', function () {
+    $('#id_model').bind('keyup', function(){
         var val = $(this).val();
 
-        $('input[name*=codename]').each(function (idx, el) {
+        $('input[name*=codename]').each(function(idx, el) {
             var name = $(el).parents('tr').find('input[name*=name]');
 
             if (idx == 0) {
